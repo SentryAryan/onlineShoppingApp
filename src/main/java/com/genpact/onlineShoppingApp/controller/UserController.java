@@ -13,19 +13,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.genpact.onlineShoppingApp.entity.User;
 import com.genpact.onlineShoppingApp.service.UserService;
 
-
 import org.bson.types.ObjectId;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
-    
-@Autowired
-private UserService userService;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/path")
     public String getMethodName() {
@@ -38,17 +38,19 @@ private UserService userService;
     }
 
     @GetMapping("/get")
-    public List<User>getAllUsers() {
-        return  userService.getAllUsers();
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
     }
-    
-    
+
     // Delete Operation
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable ObjectId id) {
-        userService.deleteUser(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<String> deleteUser(@PathVariable ObjectId id) {
+
+        if (userService.deleteUser(id)) {
+            return ResponseEntity.ok("User deleted successfully");
+        } else {
+            return ResponseEntity.status(404).body("User not found");
+        }
     }
-    
 
 }

@@ -4,9 +4,7 @@ import org.springframework.stereotype.Service;
 
 import org.bson.types.ObjectId;
 
-
 import java.util.List;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -23,21 +21,19 @@ public class UserService {
         return userRepository.save(user);
     }
 
-
-
     // Delete Operation
-    public void deleteUser(ObjectId id) {
-        userRepository.deleteById(id);
+    public boolean deleteUser(ObjectId id) {
+        if(userRepository.findById(id).isPresent()) {
+            userRepository.deleteById(id);
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
-
- 
-   
-   public List<User> getAllUsers() {
-     return userRepository.findAll();
-   }
-     
-
-    
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
 
 }
