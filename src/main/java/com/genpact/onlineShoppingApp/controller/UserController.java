@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.genpact.onlineShoppingApp.entity.User;
 import com.genpact.onlineShoppingApp.service.UserService;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 @RestController
@@ -21,14 +23,20 @@ public class UserController {
 private UserService userService;
 
     @GetMapping("/path")
-    public String getMethodName(@RequestParam String param) {
-        return "Abhay";
+    public String getMethodName() {
+        return "Aryan";
     }
 
     @PostMapping("/create")
     public User createUser(@RequestBody User user) {
         return userService.createUser(user);
     }
+
+    @GetMapping("/get")
+    public List<User>getAllUsers() {
+        return  userService.getAllUsers();
+    }
+    
     
 
 }

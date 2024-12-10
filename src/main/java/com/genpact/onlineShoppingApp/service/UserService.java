@@ -1,6 +1,9 @@
 package com.genpact.onlineShoppingApp.service;
 
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.genpact.onlineShoppingApp.repository.UserRepository;
@@ -16,4 +19,12 @@ public class UserService {
         return userRepository.save(user);
     }
 
+ 
+   
+   public List<User> getAllUsers() {
+     return userRepository.findAll();
+   }
+     
+
+    
 }
