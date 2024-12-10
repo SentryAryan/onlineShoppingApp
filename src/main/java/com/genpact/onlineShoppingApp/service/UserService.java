@@ -2,7 +2,11 @@ package com.genpact.onlineShoppingApp.service;
 
 import org.springframework.stereotype.Service;
 
+import org.bson.types.ObjectId;
+
+
 import java.util.List;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,6 +23,14 @@ public class UserService {
         return userRepository.save(user);
     }
 
+
+
+    // Delete Operation
+    public void deleteUser(ObjectId id) {
+        userRepository.deleteById(id);
+    }
+
+
  
    
    public List<User> getAllUsers() {
@@ -27,4 +39,5 @@ public class UserService {
      
 
     
+
 }
