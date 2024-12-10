@@ -8,12 +8,12 @@ import com.genpact.onlineShoppingApp.entity.User;
 
 @Service
 public class UserService {
-    
+
     @Autowired
     private UserRepository userRepository;
 
-    public User createUser() {
-        return userRepository.findAll();
+    public User createUser(User user) {
+        return userRepository.save(user);
     }
 
 }
