@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.genpact.onlineShoppingApp.entity.User;
 import com.genpact.onlineShoppingApp.service.UserService;
 
+
 import org.bson.types.ObjectId;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
@@ -33,6 +36,12 @@ private UserService userService;
     public User createUser(@RequestBody User user) {
         return userService.createUser(user);
     }
+
+    @GetMapping("/get")
+    public List<User>getAllUsers() {
+        return  userService.getAllUsers();
+    }
+    
     
     // Delete Operation
     @DeleteMapping("/{id}")
