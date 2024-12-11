@@ -11,9 +11,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Data;
 
 @Data
-@Document(collection = "users")
-@JsonPropertyOrder({ "id", "name", "email", "password", "role" })
-public class User {
+@Document(collection = "products")
+@JsonPropertyOrder({ "id", "name", "description", "price", "imageUrl" })
+public class Product {
     @Id
     @JsonIgnore
     private ObjectId id;
@@ -24,7 +24,7 @@ public class User {
     }
 
     private String name;
-    private String email;
-    private String password;
-    private String role;
+    private String description;
+    private double price;
+    private String imageUrl;
 }

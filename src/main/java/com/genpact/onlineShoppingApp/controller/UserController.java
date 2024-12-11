@@ -20,25 +20,22 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
 @RequestMapping("/api/users")
+@CrossOrigin(origins = "http://localhost:5173")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @GetMapping("/path")
-    public String getMethodName() {
-        return "Abhay";
-    }
-
-    @PostMapping("/create")
+    @PostMapping
     public User createUser(@RequestBody User user) {
         return userService.createUser(user);
     }
 
-    @GetMapping("/get")
+    @GetMapping
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
