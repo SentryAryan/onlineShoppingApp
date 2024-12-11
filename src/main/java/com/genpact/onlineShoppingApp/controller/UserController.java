@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.genpact.onlineShoppingApp.entity.User;
@@ -51,6 +52,18 @@ public class UserController {
         } else {
             return ResponseEntity.status(404).body("User not found");
         }
+    }
+
+    // Update Functionality
+    @PutMapping("/{id}")
+    public User updateUser(@PathVariable ObjectId id, @RequestBody User user) {
+        return userService.updateUser(id, user);
+    }
+
+    // find by username
+    @GetMapping("/username/{name}")
+    public User findByUsername(@PathVariable String name) {
+        return userService.findByName(name);
     }
 
 }

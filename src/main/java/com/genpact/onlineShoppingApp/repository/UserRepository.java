@@ -12,6 +12,9 @@ import com.genpact.onlineShoppingApp.entity.User;
 public interface UserRepository extends MongoRepository<User, ObjectId> {
 
     void deleteById(ObjectId id);
+
     Optional<User> findById(ObjectId id);
-    
+
+    // find by username
+    Optional<User> findByName(String name);
 }
