@@ -19,6 +19,11 @@ public class UserService {
     private UserRepository userRepository;
 
     public User createUser(User user) {
+        // Check if email already exists
+        Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
+        if (existingUser.isPresent()) {
+            throw new RuntimeException("Email already exists");
+        }
         return userRepository.save(user);
     }
 
@@ -51,6 +56,17 @@ public class UserService {
     // find by username
     public User findByName(String name) {
         return userRepository.findByName(name).orElse(null);
+    }
+
+    // login functionality
+    public String login(String email, String password) {
+        User foundUser = userRepository.findByEmail(email)
+                .orElse(null);
+
+        if (foundUser != null && foundUser.getPassword().equals(password)) {
+            return foundUser.getRole();
+        }
+        return null;
     }
 
 }

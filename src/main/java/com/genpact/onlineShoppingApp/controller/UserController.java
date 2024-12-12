@@ -21,18 +21,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", methods = { RequestMethod.GET, RequestMethod.POST,
+        RequestMethod.PUT, RequestMethod.DELETE }, allowCredentials = "true")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userService.createUser(user);
+    public ResponseEntity<?> createUser(@RequestBody User user) {
+        try {
+            User createdUser = userService.createUser(user);
+            return ResponseEntity.ok(createdUser);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)  // 409 Conflict status
+                               .body("User registration failed: " + e.getMessage());
+        }
     }
 
     @GetMapping
@@ -61,6 +69,17 @@ public class UserController {
     @GetMapping("/username/{name}")
     public User findByUsername(@PathVariable String name) {
         return userService.findByName(name);
+    }
+
+    // login functionality
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestParam String email, @RequestParam String password) {
+        String role = userService.login(email, password);
+        if (role != null) {
+            return ResponseEntity.ok(role);
+        } else {
+            return ResponseEntity.status(401).body("Login failed: Invalid credentials");
+        }
     }
 
 }
