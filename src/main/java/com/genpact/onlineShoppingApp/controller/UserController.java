@@ -38,8 +38,8 @@ public class UserController {
             User createdUser = userService.createUser(user);
             return ResponseEntity.ok(createdUser);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT)  // 409 Conflict status
-                               .body("User registration failed: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT) // 409 Conflict status
+                    .body("User registration failed: " + e.getMessage());
         }
     }
 
@@ -73,10 +73,10 @@ public class UserController {
 
     // login functionality
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestParam String email, @RequestParam String password) {
-        String role = userService.login(email, password);
-        if (role != null) {
-            return ResponseEntity.ok(role);
+    public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password) {
+        User user = userService.login(email, password);
+        if (user != null) {
+            return ResponseEntity.ok(user);
         } else {
             return ResponseEntity.status(401).body("Login failed: Invalid credentials");
         }

@@ -59,12 +59,12 @@ public class UserService {
     }
 
     // login functionality
-    public String login(String email, String password) {
+    public User login(String email, String password) {
         User foundUser = userRepository.findByEmail(email)
                 .orElse(null);
 
         if (foundUser != null && foundUser.getPassword().equals(password)) {
-            return foundUser.getRole();
+            return foundUser;
         }
         return null;
     }
