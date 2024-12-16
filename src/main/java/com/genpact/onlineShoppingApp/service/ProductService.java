@@ -49,4 +49,9 @@ public class ProductService {
             throw new RuntimeException("Product not found with id: " + id);
         }
     }
+
+    //get product by id
+    public Product getProductById(ObjectId id) {
+        return productRepository.findById(id).orElse(null);
+    }
 }

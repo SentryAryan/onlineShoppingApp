@@ -27,6 +27,7 @@ public class Product {
     private String description;
     private double price;
     private String imageUrl;
+    private int quantity;
 
     public String getImageUrl() {
         return imageUrl;

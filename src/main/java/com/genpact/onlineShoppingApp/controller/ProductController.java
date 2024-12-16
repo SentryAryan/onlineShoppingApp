@@ -44,25 +44,31 @@ public class ProductController {
     }
 
     @PostMapping
-    public Product addProduct(
+    public ResponseEntity<Product> addProduct(
             @RequestParam("file") MultipartFile file,
             @RequestParam("name") String name,
             @RequestParam("description") String description,
-            @RequestParam("price") double price) throws IOException {
+            @RequestParam("price") double price,
+            @RequestParam("quantity") int quantity) throws IOException {
 
-        // Upload image to Cloudinary
-        Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
-        String imageUrl = (String) uploadResult.get("url");
+        try {
+            // Upload image to Cloudinary
+            Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+            String imageUrl = (String) uploadResult.get("url");
 
-        // Create new Product object
-        Product product = new Product();
-        product.setName(name);
-        product.setDescription(description);
-        product.setPrice(price);
-        product.setImageUrl(imageUrl);
+            // Create new Product object
+            Product product = new Product();
+            product.setName(name);
+            product.setDescription(description);
+            product.setPrice(price);
+            product.setImageUrl(imageUrl);
+            product.setQuantity(quantity);
 
-        return productService.addProduct(product);
-    }   
+            return ResponseEntity.ok(productService.addProduct(product));
+        } catch (IOException e) {
+            return ResponseEntity.status(500).body(null);
+        }
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable ObjectId id) {
@@ -73,17 +79,35 @@ public class ProductController {
         }
     }
 
-    //update product this also has a image
+    // update product this also has a image
     @PutMapping("/{id}")
-    public Product updateProduct(@PathVariable ObjectId id, @RequestParam("file") MultipartFile file, @RequestParam("name") String name, @RequestParam("description") String description, @RequestParam("price") double price) throws IOException {
-        Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
-        String imageUrl = (String) uploadResult.get("url");
+    public ResponseEntity<Product> updateProduct(@PathVariable ObjectId id, @RequestParam("file") MultipartFile file,
+            @RequestParam("name") String name, @RequestParam("description") String description,
+            @RequestParam("price") double price, @RequestParam("quantity") int quantity) throws IOException {
+        try {
+            Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+            String imageUrl = (String) uploadResult.get("url");
 
-        Product product = new Product();
-        product.setName(name);
-        product.setDescription(description);
-        product.setPrice(price);
-        product.setImageUrl(imageUrl);
-        return productService.updateProduct(id, product);
+            Product product = new Product();
+            product.setName(name);
+            product.setDescription(description);
+            product.setPrice(price);
+            product.setImageUrl(imageUrl);
+            product.setQuantity(quantity);
+            return ResponseEntity.ok(productService.updateProduct(id, product));
+        } catch (IOException e) {
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+    // get product by id
+    @GetMapping("/id/{id}")
+    public ResponseEntity<?> getProductById(@PathVariable ObjectId id) {
+        Product product = productService.getProductById(id);
+        if (product != null) {
+            return ResponseEntity.ok(product);
+        } else {
+            return ResponseEntity.status(404).body("Product not found");
+        }
     }
 }

@@ -3,6 +3,10 @@ package com.genpact.onlineShoppingApp.entity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bson.types.ObjectId;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -29,4 +33,6 @@ public class User {
     private String email;
     private String password;
     private String role;
+    private List<CartItem> cart = new ArrayList<>();
+
 }

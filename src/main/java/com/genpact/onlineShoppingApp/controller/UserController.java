@@ -23,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.genpact.onlineShoppingApp.entity.CartItem;
 @RestController
 @RequestMapping("/api/users")
 @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", methods = { RequestMethod.GET, RequestMethod.POST,
@@ -79,6 +80,42 @@ public class UserController {
             return ResponseEntity.ok(user);
         } else {
             return ResponseEntity.status(401).body("Login failed: Invalid credentials");
+        }
+    }
+
+    // add to cart
+    @PostMapping("/add-to-cart/{userId}/{productId}/{quantity}")
+    public ResponseEntity<?> addToCart(@PathVariable ObjectId userId, @PathVariable ObjectId productId,
+            @PathVariable int quantity) {
+        User user = userService.addToCart(productId, userId, quantity);
+        if (user != null) {
+            return ResponseEntity.ok(user.getCart());
+        } else {
+            return ResponseEntity.status(409).body("Product already in cart");
+        }
+    }
+
+    // get cart
+    @GetMapping("/cart/{userId}")
+    public ResponseEntity<?> getCart(@PathVariable ObjectId userId) {
+        try {
+            List<CartItem> cart = userService.getCart(userId);
+            return ResponseEntity.ok(cart);
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body("User not found");
+        }
+    }
+
+    // remove from cart
+    @DeleteMapping("/cart/{userId}/{productId}")
+    public ResponseEntity<?> removeFromCart(
+            @PathVariable ObjectId userId,
+            @PathVariable ObjectId productId) {
+        try {
+            User updatedUser = userService.removeFromCart(productId, userId);
+            return ResponseEntity.ok(updatedUser.getCart());
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(404).body("Product not found in cart");
         }
     }
 
