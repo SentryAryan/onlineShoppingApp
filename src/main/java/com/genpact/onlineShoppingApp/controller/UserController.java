@@ -62,8 +62,18 @@ public class UserController {
 
     // Update Functionality
     @PutMapping("/{id}")
-    public User updateUser(@PathVariable ObjectId id, @RequestBody User user) {
-        return userService.updateUser(id, user);
+    public ResponseEntity<?> updateUser(@PathVariable ObjectId id, @RequestBody User user) {
+        try {
+            User updatedUser = userService.updateUser(id, user);
+            return ResponseEntity.ok(updatedUser);
+        } catch (RuntimeException e) {
+            if (e.getMessage().equals("User not found")) {
+                return ResponseEntity.status(404).body("User not found");
+            } else if (e.getMessage().equals("Email already exists")) {
+                return ResponseEntity.status(409).body("Email already exists");
+            }
+            return ResponseEntity.status(409).body("User update failed: " + e.getMessage());
+        }
     }
 
     // find by username
@@ -116,6 +126,16 @@ public class UserController {
             return ResponseEntity.ok(updatedUser.getCart());
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body("Product not found in cart");
+        }
+    }
+
+    //empty cart
+    @DeleteMapping("/empty-cart/{userId}")
+    public ResponseEntity<?> emptyCart(@PathVariable ObjectId userId) {
+        if (userService.emptyCart(userId)) {
+            return ResponseEntity.ok("Cart emptied successfully");
+        } else {
+            return ResponseEntity.status(404).body("User not found");
         }
     }
 

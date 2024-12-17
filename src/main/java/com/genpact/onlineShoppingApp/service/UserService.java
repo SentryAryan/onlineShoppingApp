@@ -47,6 +47,12 @@ public class UserService {
     public User updateUser(ObjectId id, User user) {
         Optional<User> optionalUser = userRepository.findById(id);
 
+        // check if email already exists which is not the same as the id
+        Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
+        if (existingUser.isPresent() && !existingUser.get().getId().toString().equals(id.toString())) {
+            throw new RuntimeException("Email already exists");
+        }
+
         if (optionalUser.isPresent()) {
             user.setId(id);
             return userRepository.save(user);
@@ -77,6 +83,7 @@ public class UserService {
         CartItem cartItem = new CartItem(product, quantity);
         // check if product is already in cart
         if (foundUser != null && product != null && !foundUser.getCart().contains(cartItem)) {
+            foundUser.getCart().removeIf(item -> item.getProduct().getId().toString().equals(productId.toString()));
             foundUser.getCart().add(cartItem);
             return userRepository.save(foundUser);
         }
@@ -104,5 +111,16 @@ public class UserService {
         }
         return null;
 
+    }
+
+    // empty cart
+    public boolean emptyCart(ObjectId userId) {
+        User foundUser = userRepository.findById(userId).orElse(null);
+        if (foundUser != null) {
+            foundUser.getCart().clear();
+            userRepository.save(foundUser);
+            return true;
+        }
+        return false;
     }
 }

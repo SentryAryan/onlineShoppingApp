@@ -110,4 +110,14 @@ public class ProductController {
             return ResponseEntity.status(404).body("Product not found");
         }
     }
+
+    // reduce quantity
+    @PutMapping("/reduce-quantity/{id}/{cartQuantity}")
+    public ResponseEntity<?> reduceQuantity(@PathVariable ObjectId id, @PathVariable int cartQuantity) {
+        Product updatedProduct = productService.reduceQuantity(id, cartQuantity);
+        if (updatedProduct != null) {
+            return ResponseEntity.ok(updatedProduct);
+        }
+        return ResponseEntity.badRequest().body("Could not reduce quantity. Check if product exists and has sufficient stock.");
+    }
 }

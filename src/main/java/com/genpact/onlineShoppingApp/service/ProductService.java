@@ -54,4 +54,14 @@ public class ProductService {
     public Product getProductById(ObjectId id) {
         return productRepository.findById(id).orElse(null);
     }
+
+    // reduce quantity
+    public Product reduceQuantity(ObjectId id, int cartQuantity) {
+        Product product = productRepository.findById(id).orElse(null);
+        if (product != null && product.getQuantity() >= cartQuantity) {
+            product.setQuantity(product.getQuantity() - cartQuantity);
+            return productRepository.save(product);
+        }
+        return null;
+    }
 }
