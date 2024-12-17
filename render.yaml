@@ -1,9 +1,11 @@
 services:
   - type: web
     name: online-shopping-app
-    env: docker
+    env: java
     region: singapore
     plan: free
+    buildCommand: ./mvnw clean package -DskipTests
+    startCommand: java -jar target/*.jar
     healthCheckPath: /actuator/health
     envVars:
       - key: PORT
