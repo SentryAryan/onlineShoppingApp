@@ -25,7 +25,7 @@ import com.genpact.onlineShoppingApp.service.ProductService;
 
 @RestController
 @RequestMapping("/api/products")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "https://online-shooping-app-frontend.vercel.app/")
 public class ProductController {
     @Autowired
     private ProductService productService;
