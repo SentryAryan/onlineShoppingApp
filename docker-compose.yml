@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb+srv://aryan:aryan@cluster0.olntneo.mongodb.net/onlineShoppingApp?retryWrites=true&w=majority&appName=Cluster0
+      - CLOUDINARY_URL=cloudinary://472313348823148:SeqPiICQVfurxSByUKb_hEyGHOk@dy6ofgpyl 
