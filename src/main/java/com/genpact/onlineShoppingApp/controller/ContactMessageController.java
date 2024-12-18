@@ -14,7 +14,7 @@ import com.genpact.onlineShoppingApp.service.ContactMessageService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 @RestController
 @RequestMapping("/api/contact")
-@CrossOrigin(origins = "https://online-shooping-app-frontend.vercel.app/")
+@CrossOrigin(origins = "http://localhost:5173")
 public class ContactMessageController {
 
     @Autowired

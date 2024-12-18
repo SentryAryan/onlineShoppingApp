@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.genpact.onlineShoppingApp.entity.CartItem;
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin(origins = "https://online-shooping-app-frontend.vercel.app/", allowedHeaders = "*", methods = { RequestMethod.GET, RequestMethod.POST,
+@CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", methods = { RequestMethod.GET, RequestMethod.POST,
         RequestMethod.PUT, RequestMethod.DELETE }, allowCredentials = "true")
 public class UserController {
 
