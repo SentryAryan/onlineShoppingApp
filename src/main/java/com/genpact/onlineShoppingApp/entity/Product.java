@@ -28,6 +28,7 @@ public class Product {
     private double price;
     private String imageUrl;
     private int quantity;
+    private String category;
 
     public String getImageUrl() {
         return imageUrl;

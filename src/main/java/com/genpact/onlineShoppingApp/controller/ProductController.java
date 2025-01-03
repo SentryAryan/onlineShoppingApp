@@ -49,7 +49,8 @@ public class ProductController {
             @RequestParam("name") String name,
             @RequestParam("description") String description,
             @RequestParam("price") double price,
-            @RequestParam("quantity") int quantity) throws IOException {
+            @RequestParam("quantity") int quantity,
+            @RequestParam("category") String category) throws IOException {
 
         try {
             // Upload image to Cloudinary
@@ -63,7 +64,7 @@ public class ProductController {
             product.setPrice(price);
             product.setImageUrl(imageUrl);
             product.setQuantity(quantity);
-
+            product.setCategory(category);
             return ResponseEntity.ok(productService.addProduct(product));
         } catch (IOException e) {
             return ResponseEntity.status(500).body(null);
@@ -83,7 +84,8 @@ public class ProductController {
     @PutMapping("/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable ObjectId id, @RequestParam("file") MultipartFile file,
             @RequestParam("name") String name, @RequestParam("description") String description,
-            @RequestParam("price") double price, @RequestParam("quantity") int quantity) throws IOException {
+            @RequestParam("price") double price, @RequestParam("quantity") int quantity,
+            @RequestParam("category") String category) throws IOException {
         try {
             Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
             String imageUrl = (String) uploadResult.get("url");
@@ -94,6 +96,7 @@ public class ProductController {
             product.setPrice(price);
             product.setImageUrl(imageUrl);
             product.setQuantity(quantity);
+            product.setCategory(category);
             return ResponseEntity.ok(productService.updateProduct(id, product));
         } catch (IOException e) {
             return ResponseEntity.status(500).body(null);
