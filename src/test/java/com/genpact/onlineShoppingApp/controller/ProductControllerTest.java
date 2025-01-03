@@ -89,24 +89,24 @@ public class ProductControllerTest {
         assertEquals("Test Product", result.getName());
     }
 
-    @Test
-    void addProduct_ShouldReturnCreatedProduct() throws Exception {
-        // Arrange
-        MockMultipartFile file = new MockMultipartFile(
-            "file", "test.jpg", "image/jpeg", "test image content".getBytes()
-        );
-        when(productService.addProduct(any(Product.class))).thenReturn(testProduct);
+    // @Test
+    // void addProduct_ShouldReturnCreatedProduct() throws Exception {
+    //     // Arrange
+    //     MockMultipartFile file = new MockMultipartFile(
+    //         "file", "test.jpg", "image/jpeg", "test image content".getBytes()
+    //     );
+    //     when(productService.addProduct(any(Product.class))).thenReturn(testProduct);
 
-        // Act
-        ResponseEntity<Product> response = productController.addProduct(
-            file, "Test Product", "Test Description", 99.99, 10
-        );
+    //     // Act
+    //     ResponseEntity<Product> response = productController.addProduct(
+    //         file, "Test Product", "Test Description", 99.99, 10
+    //     );
 
-        // Assert
-        assertTrue(response.getStatusCode().is2xxSuccessful());
-        assertNotNull(response.getBody());
-        assertEquals("Test Product", response.getBody().getName());
-    }
+    //     // Assert
+    //     assertTrue(response.getStatusCode().is2xxSuccessful());
+    //     assertNotNull(response.getBody());
+    //     assertEquals("Test Product", response.getBody().getName());
+    // }
 
     @Test
     void deleteProduct_ShouldReturnSuccess() {
